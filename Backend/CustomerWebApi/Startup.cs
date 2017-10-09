@@ -13,7 +13,7 @@ namespace CustomerWebApi
     {
         public Startup(IConfiguration configuration)
         {
-            Configuration = configuration;
+            Configuration = configuration ?? throw new ArgumentNullException(nameof(configuration));
         }
 
         public IConfiguration Configuration { get; }
@@ -25,8 +25,20 @@ namespace CustomerWebApi
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env)
+        public void Configure(
+            IApplicationBuilder app,
+            IHostingEnvironment env)
         {
+            if (app == null)
+            {
+                throw new ArgumentNullException(nameof(app));
+            }
+
+            if (env == null)
+            {
+                throw new ArgumentNullException(nameof(env));
+            }
+
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();

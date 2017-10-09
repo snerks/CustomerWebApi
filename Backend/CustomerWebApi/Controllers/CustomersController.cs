@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using CustomerWebApi.Models;
 using CustomerWebApi.Services;
+using System.Linq;
 
 namespace CustomerWebApi.Controllers
 {
@@ -17,9 +18,6 @@ namespace CustomerWebApi.Controllers
 
         public ICustomerService CustomerService { get; }
 
-        public IActionResult Get()
-        {
-            return Ok(CustomerService.GetAll());
-        }
+        public IActionResult Get() => Ok(CustomerService.GetAll());
     }
 }

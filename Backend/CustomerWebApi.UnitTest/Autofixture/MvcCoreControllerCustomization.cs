@@ -8,10 +8,20 @@ namespace CustomerWebApi.UnitTest.AutoFixture
     {
         public void Customize(IFixture fixture)
         {
-            fixture.Behaviors.OfType<ThrowingRecursionBehavior>().ToList()
+            if (fixture == null)
+            {
+                throw new System.ArgumentNullException(nameof(fixture));
+            }
+
+            fixture
+                .Behaviors
+                .OfType<ThrowingRecursionBehavior>()
+                .ToList()
                 .ForEach(b => fixture.Behaviors.Remove(b));
 
-            fixture.Behaviors.Add(new OmitOnRecursionBehavior());
+            fixture
+                .Behaviors
+                .Add(new OmitOnRecursionBehavior());
 
             fixture.Register<IModelMetadataProvider>(() => new EmptyModelMetadataProvider());
         }

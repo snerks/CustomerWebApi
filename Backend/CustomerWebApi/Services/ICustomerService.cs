@@ -6,9 +6,9 @@ namespace CustomerWebApi.Services
     public interface ICustomerService
     {
         IEnumerable<Customer> GetAll();
-        // Person Get(int id);
-        // Person Add(Person person);
-        // void Update(int id, Person person);
+        // Customer Get(int id);
+        // Customer Add(Customer customer);
+        // void Update(int id, Customer customer);
         // void Delete(int id);
     }
 }

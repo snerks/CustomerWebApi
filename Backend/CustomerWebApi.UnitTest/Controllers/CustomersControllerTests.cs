@@ -60,10 +60,10 @@ namespace CustomerWebApi.UnitTest.Controllers
 
                 var expectedCustomerItemCount = fixture.Create<int>();
                 fixture.RepeatCount = expectedCustomerItemCount;
-                var customerItems = fixture.CreateMany<Customer>();
+                var expectedCustomerItems = fixture.CreateMany<Customer>();
 
                 var customerService = new Mock<ICustomerService>();
-                customerService.Setup(m => m.GetAll()).Returns(customerItems);
+                customerService.Setup(m => m.GetAll()).Returns(expectedCustomerItems);
                 fixture.Register<ICustomerService>(() => customerService.Object);
 
                 var sut = fixture.Create<CustomersController>();
@@ -76,6 +76,8 @@ namespace CustomerWebApi.UnitTest.Controllers
                 var resultCustomerItems = okObjectResult.Value.Should().BeAssignableTo<IEnumerable<Customer>>().Subject;
 
                 resultCustomerItems.Count().Should().Be(expectedCustomerItemCount);
+
+                resultCustomerItems.ShouldAllBeEquivalentTo(expectedCustomerItems);
             }
         }
     }
