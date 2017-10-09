@@ -1,19 +1,6 @@
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Abstractions;
-using Microsoft.AspNetCore.Http.Features;
-using System.Collections.Generic;
-using System.Threading.Tasks;
 using System.Linq;
-using Xunit;
-using FluentAssertions;
-using System;
-using Moq;
-using Ploeh.AutoFixture;
-using System.Net.Http;
-using Ploeh.AutoFixture.AutoMoq;
-using Microsoft.AspNetCore.Mvc.ViewFeatures;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
-using Microsoft.AspNetCore.Mvc.ModelBinding.Metadata;
+using Ploeh.AutoFixture;
 
 namespace CustomerWebApi.UnitTest.AutoFixture
 {
