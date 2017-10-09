@@ -76,7 +76,6 @@ namespace CustomerWebApi.UnitTest.Controllers
                 var resultCustomerItems = okObjectResult.Value.Should().BeAssignableTo<IEnumerable<Customer>>().Subject;
 
                 resultCustomerItems.Count().Should().Be(expectedCustomerItemCount);
-
                 resultCustomerItems.ShouldAllBeEquivalentTo(expectedCustomerItems);
             }
         }
