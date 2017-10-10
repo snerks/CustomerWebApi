@@ -21,7 +21,15 @@ namespace CustomerWebApi.Services
         }
 
         // Customer Get(int id);
-        // Customer Add(Customer customer);
+
+        public Customer Add(Customer customer)
+        {
+            CustomerDbContext.Customers.Add(customer);
+            CustomerDbContext.SaveChanges();
+
+            return customer;
+        }
+
         // void Update(int id, Customer customer);
         // void Delete(int id);
     }

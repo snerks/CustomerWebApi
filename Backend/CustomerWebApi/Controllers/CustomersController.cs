@@ -22,6 +22,7 @@ namespace CustomerWebApi.Controllers
             return Ok(result);
         }
 
+        [HttpPost]
         public IActionResult Post([FromBody] Customer customer)
         {
             if (!ModelState.IsValid)
@@ -29,7 +30,9 @@ namespace CustomerWebApi.Controllers
                 return BadRequest(ModelState);
             }
 
-            return CreatedAtAction("Get", new { id = customer.Id }, customer);
+            var result = CustomerService.Add(customer);
+
+            return CreatedAtAction("Get", new { id = result.Id }, result);
         }
     }
 }
