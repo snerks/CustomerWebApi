@@ -2,6 +2,7 @@ using Microsoft.AspNetCore.Mvc;
 using System;
 using CustomerWebApi.Services;
 using System.Linq;
+using CustomerWebApi.Models;
 
 namespace CustomerWebApi.Controllers
 {
@@ -19,6 +20,16 @@ namespace CustomerWebApi.Controllers
         {
             var result = CustomerService.GetAll();
             return Ok(result);
+        }
+
+        public IActionResult Post([FromBody] Customer customer)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            return CreatedAtAction("Get", new { id = customer.Id }, customer);
         }
     }
 }

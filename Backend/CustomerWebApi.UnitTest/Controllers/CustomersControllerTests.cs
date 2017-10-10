@@ -11,6 +11,7 @@ using CustomerWebApi.Services;
 using System.Linq;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
+using Microsoft.AspNetCore.Mvc.ModelBinding;
 
 namespace CustomerWebApi.UnitTest.Controllers
 {
@@ -77,6 +78,72 @@ namespace CustomerWebApi.UnitTest.Controllers
 
                 resultCustomerItems.Count().Should().Be(expectedCustomerItemCount);
                 resultCustomerItems.ShouldAllBeEquivalentTo(expectedCustomerItems);
+            }
+        }
+
+        public class Post
+        {
+            [Fact]
+            public void Returns_non_null()
+            {
+                // Arrange
+                var fixture = GetFixture();
+                var sut = fixture.Create<CustomersController>();
+
+                // Act
+                var result = sut.Post(new Customer { Name = "John" });
+
+                // Assert
+                result.Should().NotBeNull();
+            }
+
+            [Fact]
+            public void Invalid_item_returns_correct_result()
+            {
+                // Arrange
+                var fixture = GetFixture();
+
+                var sut = fixture.Create<CustomersController>();
+                var inputCustomer = fixture.Create<Customer>();
+
+                var errorKey = fixture.Create<string>();
+                var errorMessage = fixture.Create<string>();
+                sut.ModelState.AddModelError(errorKey, errorMessage);
+
+                // Act
+                var result = sut.Post(inputCustomer);
+
+                // Assert
+                var typedResult = result.Should().BeOfType<BadRequestObjectResult>().Subject;
+                var resultValue = typedResult.Value;
+
+                resultValue.Should().NotBeNull();
+
+                var resultValueSerializableError = typedResult.Value as SerializableError;
+                resultValueSerializableError.Should().NotBeNull();
+                resultValueSerializableError[errorKey].Should().NotBeNull();
+                (resultValueSerializableError[errorKey] as string[]).First().Should().Be(errorMessage);
+            }
+
+            [Fact]
+            public void Valid_item_returns_correct_result()
+            {
+                // Arrange
+                var fixture = GetFixture();
+
+                var sut = fixture.Create<CustomersController>();
+                var expectedCustomer = fixture.Create<Customer>();
+
+                // Act
+                var result = sut.Post(expectedCustomer);
+
+                // Assert
+                var createdResult = result.Should().BeOfType<CreatedAtActionResult>().Subject;
+                var resultCustomer = createdResult.Value.Should().BeAssignableTo<Customer>().Subject;
+
+                resultCustomer.ShouldBeEquivalentTo(expectedCustomer);
+                createdResult.ActionName.Should().Be("Get");
+                createdResult.RouteValues["id"].Should().Be(expectedCustomer.Id);
             }
         }
     }
