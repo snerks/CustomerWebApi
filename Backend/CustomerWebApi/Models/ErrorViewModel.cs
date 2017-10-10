@@ -1,5 +1,3 @@
-using System;
-
 namespace CustomerWebApi.Models
 {
     public class ErrorViewModel

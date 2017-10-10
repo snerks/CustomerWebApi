@@ -1,10 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
-using System.Threading.Tasks;
 using System;
-using System.Collections.Generic;
-using CustomerWebApi.Models;
 using CustomerWebApi.Services;
-using System.Linq;
 
 namespace CustomerWebApi.Controllers
 {
