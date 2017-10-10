@@ -17,7 +17,7 @@ namespace CustomerWebApi.Services
 
         public IEnumerable<Customer> GetAll()
         {
-            return CustomerDbContext.Customers; // .ToList();
+            return CustomerDbContext.Customers.ToList();
         }
 
         // Customer Get(int id);

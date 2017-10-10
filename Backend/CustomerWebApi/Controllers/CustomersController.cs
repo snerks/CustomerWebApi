@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Mvc;
 using System;
 using CustomerWebApi.Services;
+using System.Linq;
 
 namespace CustomerWebApi.Controllers
 {
@@ -14,6 +15,10 @@ namespace CustomerWebApi.Controllers
 
         public ICustomerService CustomerService { get; }
 
-        public IActionResult Get() => Ok(CustomerService.GetAll());
+        public IActionResult Get()
+        {
+            var result = CustomerService.GetAll();
+            return Ok(result);
+        }
     }
 }
