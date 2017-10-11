@@ -131,8 +131,13 @@ namespace CustomerWebApi.UnitTest.Controllers
                 // Arrange
                 var fixture = GetFixture();
 
-                var sut = fixture.Create<CustomersController>();
                 var expectedCustomer = fixture.Create<Customer>();
+
+                var customerService = new Mock<ICustomerService>();
+                customerService.Setup(m => m.Add(It.IsAny<Customer>())).Returns(expectedCustomer);
+                fixture.Register<ICustomerService>(() => customerService.Object);
+
+                var sut = fixture.Create<CustomersController>();
 
                 // Act
                 var result = sut.Post(expectedCustomer);
