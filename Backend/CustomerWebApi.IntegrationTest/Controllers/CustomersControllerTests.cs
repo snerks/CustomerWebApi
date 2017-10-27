@@ -27,6 +27,7 @@ namespace CustomerWebApi.IntegrationTest.Controllers
         private HttpClient GetHttpClient()
         {
             var result = TestServer.CreateClient();
+            result.BaseAddress.Should().Be("http://localhost/");
 
             result.DefaultRequestHeaders.Accept.Clear();
             result.DefaultRequestHeaders.Accept.Add(
@@ -46,35 +47,53 @@ namespace CustomerWebApi.IntegrationTest.Controllers
                 {
                     // Assert
                     response.EnsureSuccessStatusCode();
-                    // var responseString = await response.Content.ReadAsStringAsync();
+                    var responseString = await response.Content.ReadAsStringAsync();
+                    responseString.Should().Be("[]");
                     // var customers = JsonConvert.DeserializeObject<IEnumerable<Customer>>(responseString);
                     // customers.Count().Should().Be(0);
                 }
             }
         }
 
-        // [Fact]
-        // public async Task Customer_Post_with_valid_item_succeeds()
-        // {
-        //     // Arrange
-        //     var fixture = new Fixture();
+        [Fact]
+        public async Task Customer_Post_with_valid_item_succeeds()
+        {
+            // Arrange
+            var fixture = new Fixture();
 
-        //     var customerToAdd = fixture.Build<Customer>().Without(c => c.Id).Create();
+            var customerToAdd = fixture.Build<Customer>().Without(c => c.Id).Create();
 
-        //     var content = JsonConvert.SerializeObject(customerToAdd);
-        //     var stringContent = new StringContent(content, Encoding.UTF8, "application/json");
+            var content = JsonConvert.SerializeObject(customerToAdd);
+            var stringContent = new StringContent(content, Encoding.UTF8, "application/json");
 
-        //     // Act
-        //     var response = await HttpClient.PostAsync("/api/customers", stringContent);
+            // Act
+            // var response = await HttpClient.PostAsync("/api/customers", stringContent);
 
-        //     // Assert
-        //     response.EnsureSuccessStatusCode();
-        //     response.StatusCode.Should().Be(HttpStatusCode.Created);
-        //     response.Headers.Location.Should().Be("http://localhost/api/Customers?id=1");
+            // Assert
+            // response.EnsureSuccessStatusCode();
+            // response.StatusCode.Should().Be(HttpStatusCode.Created);
+            // response.Headers.Location.Should().Be("http://localhost/api/Customers?id=1");
 
-        //     var responseString = await response.Content.ReadAsStringAsync();
-        //     var person = JsonConvert.DeserializeObject<Customer>(responseString);
-        //     person.Id.Should().Be(1);
-        // }
+            // var responseString = await response.Content.ReadAsStringAsync();
+            // var person = JsonConvert.DeserializeObject<Customer>(responseString);
+            // person.Id.Should().Be(1);
+
+            // Arrange
+            using (var httpClient = GetHttpClient())
+            {
+                // Act
+                using (HttpResponseMessage response = await httpClient.PostAsync("/api/customers", stringContent))
+                {
+                    // Assert
+                    response.EnsureSuccessStatusCode();
+                    response.StatusCode.Should().Be(HttpStatusCode.Created);
+                    response.Headers.Location.Should().Be("http://localhost/api/Customers?id=1");
+
+                    var responseString = await response.Content.ReadAsStringAsync();
+                    var person = JsonConvert.DeserializeObject<Customer>(responseString);
+                    person.Id.Should().Be(1);
+                }
+            }
+        }
     }
 }
