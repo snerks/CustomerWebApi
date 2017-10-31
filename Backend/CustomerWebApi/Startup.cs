@@ -28,7 +28,7 @@ namespace CustomerWebApi
             services.AddDbContext<CustomerDbContext>(options =>
             {
                 options.UseInMemoryDatabase(Guid.NewGuid().ToString());
-            });
+            }, ServiceLifetime.Singleton);
 
             services.AddScoped<ICustomerService, CustomerService>();
         }

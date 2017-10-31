@@ -8,7 +8,7 @@ namespace CustomerWebApi.Services
         IEnumerable<Customer> GetAll();
         // Customer Get(int id);
         Customer Add(Customer customer);
-        // void Update(int id, Customer customer);
+        void Update(int id, Customer customer);
         // void Delete(int id);
     }
 }

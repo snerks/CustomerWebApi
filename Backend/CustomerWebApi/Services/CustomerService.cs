@@ -30,7 +30,18 @@ namespace CustomerWebApi.Services
             return customer;
         }
 
-        // void Update(int id, Customer customer);
+        public void Update(int id, Customer customer)
+        {
+            var existing = CustomerDbContext.Customers.FirstOrDefault(_ => _.Id == id);
+
+            // if (existing == null)
+            // {
+            //     return;
+            // }
+
+            existing.Name = customer.Name;
+        }
+
         // void Delete(int id);
     }
 }

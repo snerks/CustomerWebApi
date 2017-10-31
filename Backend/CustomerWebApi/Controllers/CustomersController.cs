@@ -16,6 +16,7 @@ namespace CustomerWebApi.Controllers
 
         public ICustomerService CustomerService { get; }
 
+        [HttpGet]
         public IActionResult Get()
         {
             var result = CustomerService.GetAll();
@@ -33,6 +34,27 @@ namespace CustomerWebApi.Controllers
             var result = CustomerService.Add(customer);
 
             return CreatedAtAction("Get", new { id = result.Id }, result);
+        }
+
+        [HttpPut("{id}")]
+        public IActionResult Put(int id, [FromBody] Customer customer)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            try
+            {
+                CustomerService.Update(id, customer);
+            }
+            catch (Exception ex)
+            {
+                // return NoContent();
+                return StatusCode(500, ex.Message);
+            }
+
+            return NoContent();
         }
     }
 }
